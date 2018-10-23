@@ -1,14 +1,16 @@
-\\ Example Calculation: Integral of (sinc(x))^2 [0,10000*Pi].
-\\ Bradley Klee
+\\ Example Calculation by Bradley Klee 
+\\ Definite integral of cardinal sine squared
+\\ 	Int_{0..10000*Pi}(sinc(x))^2*dx
+\\ 	where sinc(x) = sin(x)/x  
 
 \\ input: integer for series truncation
-\\ output: sinc^2 expansion coefficients around x=0
+\\ output: expansion coefficients of (sinc(x))^2 around x=0
 {sinc20(mPrec)=my(cv);cv=[1.,0.];for(j=2,mPrec,
 	cv=concat(cv,-[cv[j-1]*4/(2+3*j+j^2)]));
 	cv};
 
 \\ input: integers for series truncation and expansion center
-\\ output: sinc^2 expansion coefficients around x=n*pi
+\\ output: expansion coefficients of (sinc(x))^2 around x=n*pi
 {sinc2n(mPrec,nDom)=my(cv);
 	cv=[0.,0.,1/(nDom*Pi)^2,-2/(nDom*Pi)^3];
 	for(j=4,mPrec,cv=concat(cv,cv[-4..-1]
@@ -19,11 +21,11 @@
 	cv};
 
 \\ input: integer for series truncation
-\\ output: powers of x=-Pi
+\\ output: integrated powers of x, evaluated at -Pi
 {xPiInt(mPrec)=vector(mPrec+1,j,(-Pi)^j/j)~};
 
 \\ input: integers for total domain and series truncation	
-\\ output: sinc^2 integral x=0,n*pi with error estimate
+\\ output: Int_{0..n*Pi}(sinc(x))^2*dx, with error estimate
 \\ comment: this function is not completely optimized!
 \\		Running sums would be better. 
 {sinc2Int(nDom,mPrec)=my(IntVals,xVals);
@@ -37,12 +39,12 @@
 	vector(nDom,j,1)*IntVals*[1/2,1;1/2,-1]};
 
 \\ input: integer for total domain	
-\\ output: sinc^2 integral x=0,n*pi
+\\ output: Int_{0..n*Pi}(sinc(x))^2*dx
 {sinc2IntIdiom(nDom)=
 	intnum(x=0,nDom*Pi,(sin(x)/x)^2)};
 
 \\ input: integer for total domain	
-\\ output: sinc^2 integral x=0,n*pi
+\\ output: Int_{0..n*Pi}(sinc(x))^2*dx
 {sinc2IntPiecewiseIdiom(nDom)=my(int);int=0;
 	for(n=0,nDom-1,int+=intnum(x=n*Pi,(n+1)*Pi,
 		(sin(x)/x)^2));
